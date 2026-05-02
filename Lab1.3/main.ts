@@ -195,7 +195,7 @@ class BinarySearchTreeLevel2 extends BinarySearchTreeLevel1 {
 }
 
 // DEMO
-function level1Demo(): void {
+function level1Demoo(): void {
   console.log("РІВЕНЬ 1");
   const tree = new BinarySearchTreeLevel1();
 
@@ -216,7 +216,7 @@ function level1Demo(): void {
   tree.printTable("Дерево (послідовний обхід):");
 }
 
-function level2Demo(): BinarySearchTreeLevel2 {
+function level2Demoo(): BinarySearchTreeLevel2 {
   console.log("\nРІВЕНЬ 2");
   const tree = new BinarySearchTreeLevel2();
 
@@ -234,7 +234,7 @@ function level2Demo(): BinarySearchTreeLevel2 {
   return tree;
 }
 
-function level3Demo(): void {
+function level3Demoo(): void {
   console.log("\nРІВЕНЬ 3");
   const tree = new BinarySearchTreeLevel2();
 
@@ -260,6 +260,6 @@ function level3Demo(): void {
   tree.printTable("Після видалення:");
 }
 
-level1Demo();
-level2Demo();
-level3Demo();
+level1Demoo();
+level2Demoo();
+level3Demoo();
