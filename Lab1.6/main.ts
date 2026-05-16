@@ -10,6 +10,7 @@ function cloneArray(arr: number[]): number[] {
   return arr.slice();
 }
 
+// РІВЕНЬ 1
 class MinHeap {
   private data: number[] = [];
 
@@ -65,6 +66,7 @@ function heapSortByPriorityQueue(arr: number[]): number[] {
   return res;
 }
 
+// РІВЕНЬ 2 + 3
 function heapify(arr: number[], n: number, i: number): void {
   let largest = i;
   const l = 2 * i + 1;
@@ -88,30 +90,31 @@ function heapSortClassic(arr: number[]): void {
   }
 }
 
-function timeIt(fn: () => void, repeats = 3): number {
-  let total: bigint = 0n;
+function timeItSeconds(fn: () => void, repeats = 3): number {
+  let total = 0;
   for (let i = 0; i < repeats; i++) {
-    const t0 = process.hrtime.bigint();
+    const t0 = Date.now();
     fn();
-    const t1 = process.hrtime.bigint();
-    total += BigInt(t1 - t0);
+    const t1 = Date.now();
+    total += t1 - t0;
   }
-  return Number(total / BigInt(repeats)); // ns
+  return total / repeats / 1000;
 }
 
+// Demo
 function level1Timings(): void {
   console.log("РІВЕНЬ 1: Пірамідальне базове (черга)");
   const N = 100;
   const sizes = [N, N ** 2, N ** 3];
 
-  const rows: { size: number; time_ns: number }[] = [];
+  const rows: { size: number; time_s: number }[] = [];
   for (const size of sizes) {
     const base = generateArray(size);
-    const t = timeIt(() => {
+    const t = timeItSeconds(() => {
       const arr = cloneArray(base);
       heapSortByPriorityQueue(arr);
     });
-    rows.push({ size, time_ns: t });
+    rows.push({ size, time_s: t });
   }
 
   console.table(rows);
@@ -122,21 +125,21 @@ function level2Timings(): void {
   const N = 100;
   const sizes = [N, N ** 2, N ** 3];
 
-  const rows: { size: number; priority_queue_ns: number; classic_heap_ns: number }[] = [];
+  const rows: { size: number; priority_queue_s: number; classic_heap_s: number }[] = [];
   for (const size of sizes) {
     const base = generateArray(size);
 
-    const t1 = timeIt(() => {
+    const t1 = timeItSeconds(() => {
       const arr = cloneArray(base);
       heapSortByPriorityQueue(arr);
     });
 
-    const t2 = timeIt(() => {
+    const t2 = timeItSeconds(() => {
       const arr = cloneArray(base);
       heapSortClassic(arr);
     });
 
-    rows.push({ size, priority_queue_ns: t1, classic_heap_ns: t2 });
+    rows.push({ size, priority_queue_s: t1, classic_heap_s: t2 });
   }
 
   console.table(rows);
@@ -150,29 +153,30 @@ function level3Timings(): void {
   const reversed = cloneArray(sorted).reverse();
   const randomArr = generateArray(size);
 
-  const tSorted = timeIt(() => {
+  const tSorted = timeItSeconds(() => {
     const arr = cloneArray(sorted);
     heapSortClassic(arr);
   });
 
-  const tReversed = timeIt(() => {
+  const tReversed = timeItSeconds(() => {
     const arr = cloneArray(reversed);
     heapSortClassic(arr);
   });
 
-  const tRandom = timeIt(() => {
+  const tRandom = timeItSeconds(() => {
     const arr = cloneArray(randomArr);
     heapSortClassic(arr);
   });
 
   const rows = [
-    { sequence: "sorted", time_ns: tSorted },
-    { sequence: "reversed", time_ns: tReversed },
-    { sequence: "random", time_ns: tRandom },
+    { sequence: "sorted", time_s: tSorted },
+    { sequence: "reversed", time_s: tReversed },
+    { sequence: "random", time_s: tRandom },
   ];
 
   console.table(rows);
 }
+
 
 level1Timings();
 level2Timings();
